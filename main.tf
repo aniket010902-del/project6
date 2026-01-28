@@ -15,3 +15,12 @@ output "message" {
 }
 
 
+
+
+output "version" {
+
+  value = "v2 - feature branch update"
+
+}
+
+
