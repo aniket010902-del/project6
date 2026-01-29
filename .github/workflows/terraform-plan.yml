@@ -1,0 +1,83 @@
+kname: Terraform Plan
+
+
+
+on:
+
+  push:
+
+    branches: [ "main" ]
+
+  pull_request:
+
+    branches: [ "main" ]
+
+
+
+permissions:
+
+  contents: read
+
+
+
+jobs:
+
+  plan:
+
+    name: terraform-plan
+
+    runs-on: ubuntu-latest
+
+
+
+    steps:
+
+      - name: Checkout code
+
+        uses: actions/checkout@v4
+
+
+
+      - name: Setup Terraform
+
+        uses: hashicorp/setup-terraform@v3
+
+        with:
+
+          terraform_version: 1.6.6
+
+
+
+      - name: Terraform Init (no backend)
+
+        run: terraform init -backend=false
+
+        working-directory: project6/terraform
+
+
+
+      - name: Terraform Validate
+
+        run: terraform validate
+
+        working-directory: project6/terraform
+
+
+
+      - name: Terraform Plan
+
+        run: terraform plan -out=tfplan
+
+        working-directory: project6/terraform
+
+
+
+      - name: Upload plan artifact
+
+        uses: actions/upload-artifact@v4
+
+        with:
+
+          name: terraform-plan
+
+          path: project6/terraform/tfplan
